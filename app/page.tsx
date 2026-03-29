@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-5xl items-center px-6 py-20 sm:px-10 lg:px-16">
+    <section className="mx-auto flex min-h-[calc(100vh-72px-73px)] w-full max-w-5xl items-center px-6 py-20 sm:px-10 lg:px-16">
       <section className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.8fr)] lg:items-end">
         <div className="space-y-6">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">
@@ -28,6 +28,6 @@ export default function Home() {
           </ul>
         </aside>
       </section>
-    </main>
+    </section>
   );
 }
