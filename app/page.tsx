@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { getPaginatedArticles } from "@/data/articles";
 import { ArticleListTemplate } from "@/features/articles";
 
-const SITE_URL = "https://next-articulos.vercel.app";
+// Optional base URL used for absolute SEO metadata once the project has a real domain.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
 
 export const revalidate = 3600;
 
@@ -27,17 +28,17 @@ export async function generateMetadata({
   }
 
   const other: Record<string, string> = {};
-  if (page > 1) {
+  if (SITE_URL && page > 1) {
     other.prev = page === 2 ? SITE_URL : `${SITE_URL}/?pagina=${page - 1}`;
   }
-  if (page < totalPages) {
+  if (SITE_URL && page < totalPages) {
     other.next = `${SITE_URL}/?pagina=${page + 1}`;
   }
 
   return {
     ...(title && { title }),
     alternates,
-    other,
+    ...(Object.keys(other).length > 0 ? { other } : {}),
   };
 }
 

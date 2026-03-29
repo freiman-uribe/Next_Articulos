@@ -8,7 +8,7 @@ interface ArticleListTemplateProps {
   totalArticles: number;
   currentPage: number;
   totalPages: number;
-  siteUrl: string;
+  siteUrl?: string;
 }
 
 export function ArticleListTemplate({
@@ -18,30 +18,34 @@ export function ArticleListTemplate({
   totalPages,
   siteUrl,
 }: ArticleListTemplateProps) {
-  const websiteJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Next Articulos",
-    url: siteUrl,
-    description:
-      "Articulos informativos sobre desarrollo web, rendimiento, accesibilidad y arquitectura frontend.",
-  };
+  const websiteJsonLd = siteUrl
+    ? {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "Next Articulos",
+        url: siteUrl,
+        description:
+          "Articulos informativos sobre desarrollo web, rendimiento, accesibilidad y arquitectura frontend.",
+      }
+    : null;
 
-  const itemListJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: articles.map((article, index) => ({
-      "@type": "ListItem",
-      position: (currentPage - 1) * articles.length + index + 1,
-      url: `${siteUrl}/articulos/${article.slug}`,
-      name: article.title,
-    })),
-  };
+  const itemListJsonLd = siteUrl
+    ? {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        itemListElement: articles.map((article, index) => ({
+          "@type": "ListItem",
+          position: (currentPage - 1) * articles.length + index + 1,
+          url: `${siteUrl}/articulos/${article.slug}`,
+          name: article.title,
+        })),
+      }
+    : null;
 
   return (
     <>
-      <JsonLd data={websiteJsonLd} />
-      <JsonLd data={itemListJsonLd} />
+      {websiteJsonLd ? <JsonLd data={websiteJsonLd} /> : null}
+      {itemListJsonLd ? <JsonLd data={itemListJsonLd} /> : null}
 
       <section className="flex flex-col gap-8" aria-labelledby="articles-heading">
         <div className="flex flex-col gap-4 pt-6 pb-2">
