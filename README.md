@@ -11,13 +11,13 @@ Incluye:
 - layout y metadata base del proyecto
 - listado de articulos en portada
 - busqueda de articulos con API interna
+- detalle completo de articulo
+- rutas dinamicas para articulos
 - estilos globales minimos alineados a la identidad visual
 - conservacion de la configuracion manual en next.config.ts
 
 No incluye todavia:
 
-- detalle completo de articulo
-- rutas dinamicas para articulos
 - sitemap y robots
 
 ## Variables de entorno
