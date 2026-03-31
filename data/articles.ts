@@ -425,12 +425,22 @@ const articles: Article[] = [
 
 export const ARTICLES_PER_PAGE = 5;
 
+const ARTICLE_COVERS = [
+  "/article-covers/cover-editorial-1.svg",
+  "/article-covers/cover-editorial-2.svg",
+  "/article-covers/cover-editorial-3.svg",
+] as const;
+
 export function getAllArticles(): Article[] {
   return articles;
 }
 
 export function getArticleBySlug(slug: string): Article | undefined {
   return articles.find((article) => article.slug === slug);
+}
+
+export function getArticleCoverPath(articleId: number): string {
+  return ARTICLE_COVERS[(articleId - 1) % ARTICLE_COVERS.length];
 }
 
 export function getPaginatedArticles(page: number): {

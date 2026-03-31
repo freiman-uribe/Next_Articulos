@@ -1,20 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllArticles, getArticleBySlug } from "@/data/articles";
+import { getArticleBySlug, getArticleCoverPath } from "@/data/articles";
 import { ArticleDetailTemplate } from "@/features/articles";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const articles = getAllArticles();
-
-  return articles.map((article) => ({
-    slug: article.slug,
-  }));
-}
 
 export async function generateMetadata({
   params,
@@ -32,15 +24,33 @@ export async function generateMetadata({
   }
 
   const url = SITE_URL ? `${SITE_URL}/articulos/${article.slug}` : undefined;
+  const image = SITE_URL
+    ? `${SITE_URL}${getArticleCoverPath(article.id)}`
+    : undefined;
 
   return {
     title: article.title,
     description: article.description,
+    alternates: {
+      canonical: `/articulos/${article.slug}`,
+    },
     openGraph: {
       title: article.title,
       description: article.description,
       type: "article",
       ...(url ? { url } : {}),
+      ...(image
+        ? {
+            images: [
+              {
+                url: image,
+                width: 1200,
+                height: 675,
+                alt: `Portada del articulo ${article.title}`,
+              },
+            ],
+          }
+        : {}),
     },
   };
 }

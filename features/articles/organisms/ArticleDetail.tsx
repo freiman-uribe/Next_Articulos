@@ -1,5 +1,7 @@
+import Image from "next/image";
 import sanitizeHtml from "sanitize-html";
 import { FileText, Hash, Link2 } from "lucide-react";
+import { getArticleCoverPath } from "@/data/articles";
 import { BackLink } from "@/features/shared/molecules";
 import type { Article } from "@/types/article";
 
@@ -8,6 +10,8 @@ interface ArticleDetailProps {
 }
 
 export function ArticleDetail({ article }: ArticleDetailProps) {
+  const coverImage = getArticleCoverPath(article.id);
+
   return (
     <div className="mx-auto flex w-full max-w-[920px] flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -43,6 +47,18 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
             {article.description}
           </p>
         </header>
+
+        <figure className="h-[280px] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted md:h-[420px]">
+          <Image
+            src={coverImage}
+            alt={`Imagen destacada del articulo ${article.title}`}
+            width={1200}
+            height={675}
+            priority
+            sizes="(min-width: 1040px) 920px, 100vw"
+            className="h-full w-full object-cover"
+          />
+        </figure>
 
         <div
           className="article-body flex flex-col gap-6 text-[17px] leading-[1.85] text-foreground"
