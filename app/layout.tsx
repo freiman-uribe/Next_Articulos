@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     default: "Next Articulos",
     template: "%s | Next Articulos",
   },
+  icons: {
+    icon: "/favicon.svg",
+  },
   description:
     "Proyecto editorial construido con Next.js para publicar articulos con una base moderna y escalable.",
 };
