@@ -24,25 +24,14 @@ export async function generateMetadata({
       ? `Explora la pagina ${page} del listado editorial con articulos sobre frontend, SEO tecnico, accesibilidad y performance web.`
       : "Explora articulos informativos sobre desarrollo web, SEO tecnico, accesibilidad y performance con Next.js y React.";
 
-  const { totalPages } = getPaginatedArticles(page);
-
   const alternates: Metadata["alternates"] = {
     canonical: page === 1 ? "/" : `/?pagina=${page}`,
   };
-
-  const other: Record<string, string> = {};
-  if (SITE_URL && page > 1) {
-    other.prev = page === 2 ? SITE_URL : `${SITE_URL}/?pagina=${page - 1}`;
-  }
-  if (SITE_URL && page < totalPages) {
-    other.next = `${SITE_URL}/?pagina=${page + 1}`;
-  }
 
   return {
     title,
     description,
     alternates,
-    ...(Object.keys(other).length > 0 ? { other } : {}),
   };
 }
 
