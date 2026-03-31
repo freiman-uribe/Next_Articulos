@@ -16,7 +16,7 @@ export function SiteHeader() {
         </span>
       </Link>
 
-      <nav aria-label="Navegacion principal">
+      <nav aria-label="Navegación principal">
         <ul className="flex items-center gap-5 list-none" role="list">
           <li>
             <Link

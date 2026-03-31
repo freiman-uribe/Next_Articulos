@@ -34,7 +34,6 @@ El proyecto fue estructurado para seguir agregando bloques pequenos de funcional
 ### Detalle de articulo
 
 - ruta dinamica en /articulos/[slug]
-- generateStaticParams para pre-generar slugs
 - generateMetadata por articulo
 - JSON-LD tipo Article cuando existe URL publica configurada
 - pagina especifica de not found para slugs invalidos
@@ -169,8 +168,8 @@ next_articulos/
 
 ### Detalle de articulo
 
-- SSG con generateStaticParams
-- revalidate de 3600 segundos
+- Server Component
+- renderizado en servidor por request
 - metadata dinamica por slug
 
 ### Busqueda
@@ -213,7 +212,7 @@ La configuracion local del proyecto se realiza principalmente mediante variables
 
 Se usa para:
 
-- generar metadata SEO absoluta como enlaces prev y next
+- generar metadata SEO absoluta (canonical)
 - generar URLs absolutas en el JSON-LD de la portada
 - generar URLs absolutas en el JSON-LD del detalle
 
@@ -278,7 +277,6 @@ Durante el desarrollo se viene validando de forma recurrente:
 - build de produccion
 - navegacion entre home y detalle
 - slugs invalidos
-- generacion estatica de paginas de articulo
 
 ## Decisiones tecnicas
 

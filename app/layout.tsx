@@ -3,6 +3,8 @@ import { PT_Serif } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/features/layout";
 import "./globals.css";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+
 const ptSerif = PT_Serif({
   variable: "--font-pt-serif",
   subsets: ["latin"],
@@ -10,9 +12,13 @@ const ptSerif = PT_Serif({
 });
 
 export const metadata: Metadata = {
+  ...(SITE_URL ? { metadataBase: new URL(SITE_URL) } : {}),
   title: {
     default: "Next Articulos",
     template: "%s | Next Articulos",
+  },
+  icons: {
+    icon: "/favicon.svg",
   },
   description:
     "Proyecto editorial construido con Next.js para publicar articulos con una base moderna y escalable.",
