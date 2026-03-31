@@ -1,33 +1,64 @@
-export default function Home() {
-  return (
-    <main className="mx-auto flex min-h-screen w-full max-w-5xl items-center px-6 py-20 sm:px-10 lg:px-16">
-      <section className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.8fr)] lg:items-end">
-        <div className="space-y-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">
-            Revista digital
-          </p>
-          <h1 className="max-w-3xl text-4xl leading-tight font-bold tracking-[-0.03em] sm:text-5xl lg:text-6xl">
-            Historias, ideas y gui­as practicas para una web mejor pensada.
-          </h1>
-          <p className="max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
-            Next Articulos nace como una publicacion digital enfocada en contenido
-            claro, util y bien presentado. Esta portada abre una experiencia editorial
-            limpia, rapida y lista para crecer con nuevas secciones y articulos.
-          </p>
-        </div>
+import type { Metadata } from "next";
+import { getPaginatedArticles } from "@/data/articles";
+import { ArticleListTemplate } from "@/features/articles";
 
-        <aside className="rounded-3xl border border-border bg-card p-6 shadow-[0_24px_60px_rgba(31,26,23,0.08)] sm:p-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-            En esta edicion
-          </p>
-          <ul className="mt-5 space-y-3 text-base leading-7 text-foreground">
-            <li>Articulos sobre producto, desarrollo web y experiencia digital.</li>
-            <li>Una portada sobria con identidad editorial propia.</li>
-            <li>Base visual pensada para escalar hacia nuevas colecciones.</li>
-            <li>Rendimiento moderno con Next.js y App Router.</li>
-          </ul>
-        </aside>
-      </section>
-    </main>
+// Optional base URL used for absolute SEO metadata once the project has a real domain.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+
+export const revalidate = 3600;
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ pagina?: string }>;
+}): Promise<Metadata> {
+  const { pagina } = await searchParams;
+  const page = Number(pagina) || 1;
+
+  const title =
+    page > 1
+      ? `Articulos sobre desarrollo web y frontend - Pagina ${page}`
+      : undefined;
+
+  const { totalPages } = getPaginatedArticles(page);
+
+  const alternates: Metadata["alternates"] = {};
+  if (page > 1) {
+    alternates.canonical = page === 2 ? "/" : `/?pagina=${page}`;
+  }
+
+  const other: Record<string, string> = {};
+  if (SITE_URL && page > 1) {
+    other.prev = page === 2 ? SITE_URL : `${SITE_URL}/?pagina=${page - 1}`;
+  }
+  if (SITE_URL && page < totalPages) {
+    other.next = `${SITE_URL}/?pagina=${page + 1}`;
+  }
+
+  return {
+    ...(title && { title }),
+    alternates,
+    ...(Object.keys(other).length > 0 ? { other } : {}),
+  };
+}
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ pagina?: string }>;
+}) {
+  const { pagina } = await searchParams;
+  const page = Number(pagina) || 1;
+  const { articles, totalPages, currentPage, totalArticles } =
+    getPaginatedArticles(page);
+
+  return (
+    <ArticleListTemplate
+      articles={articles}
+      totalArticles={totalArticles}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      siteUrl={SITE_URL}
+    />
   );
 }

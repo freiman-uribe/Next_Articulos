@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PT_Serif } from "next/font/google";
+import { SiteFooter, SiteHeader } from "@/features/layout";
 import "./globals.css";
 
 const ptSerif = PT_Serif({
@@ -24,7 +25,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${ptSerif.variable} h-full antialiased`}>
-      <body className="min-h-full bg-background text-foreground">{children}</body>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <SiteHeader />
+
+        <main className="flex-1 mx-auto w-full max-w-[1040px] px-8 pt-10 pb-16">
+          {children}
+        </main>
+
+        <SiteFooter />
+      </body>
     </html>
   );
 }
